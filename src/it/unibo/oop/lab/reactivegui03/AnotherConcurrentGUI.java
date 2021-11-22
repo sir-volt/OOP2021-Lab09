@@ -39,6 +39,7 @@ public final class AnotherConcurrentGUI extends JFrame{
             @Override
             public void run() {
                 try {
+                    // with this, i'm waiting for 10 seconds and after that, i automatically click stop
                     Thread.sleep(10_000);
                     stop.doClick();
                 } catch (InterruptedException e) {
