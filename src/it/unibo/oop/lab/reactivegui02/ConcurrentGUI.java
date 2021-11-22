@@ -61,6 +61,9 @@ public class ConcurrentGUI extends JFrame{
             public void actionPerformed(final ActionEvent e) {
                 // Agent should be final
                 agent.stopCounting();
+                ConcurrentGUI.this.up.setEnabled(false);
+                ConcurrentGUI.this.down.setEnabled(false);
+                ConcurrentGUI.this.stop.setEnabled(false);
             }
         });
         
