@@ -13,7 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class ConcurrentGUI extends JFrame{
-    
+
+    private static final long serialVersionUID = -7684205832904834869L;
     private static final double WIDTH_PERC = 0.2;
     private static final double HEIGHT_PERC = 0.1;
     private final JLabel display = new JLabel();
@@ -38,14 +39,14 @@ public class ConcurrentGUI extends JFrame{
         
         up.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 agent.goUp();
             }  
         });
         
         down.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 agent.goDown();
             }     
         });
@@ -72,8 +73,8 @@ public class ConcurrentGUI extends JFrame{
     private class Agent implements Runnable {
 
         private boolean isUp = true;
-        private volatile boolean stop;
-        private volatile int counter;
+        private boolean stop;
+        private int counter;
 
         @Override
         public void run() {
