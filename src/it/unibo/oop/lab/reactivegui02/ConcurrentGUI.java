@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class ConcurrentGUI extends JFrame{
+public final class ConcurrentGUI extends JFrame{
 
     private static final long serialVersionUID = -7684205832904834869L;
     private static final double WIDTH_PERC = 0.2;
@@ -72,14 +72,18 @@ public class ConcurrentGUI extends JFrame{
     
     private class Agent implements Runnable {
 
-        private boolean isUp = true;
-        private boolean stop;
+        private volatile boolean isUp = true;
+        private volatile boolean stop;
         private int counter;
 
         @Override
         public void run() {
             while (!this.stop) {
                 try {
+                    /*
+                     * we created a specific String variable in order to avoid making the counter variable as volatile
+                     */
+                    final String nextString = Integer.toString(this.counter);
                     /*
                      * All the operations on the GUI must be performed by the
                      * Event-Dispatch Thread (EDT)!
@@ -88,7 +92,7 @@ public class ConcurrentGUI extends JFrame{
                         @Override
                         public void run() {
                             // This will happen in the EDT: since i'm reading counter it needs to be volatile.
-                            ConcurrentGUI.this.display.setText(Integer.toString(Agent.this.counter));
+                            ConcurrentGUI.this.display.setText(nextString);
                         }
                     });
                     /*
@@ -103,7 +107,6 @@ public class ConcurrentGUI extends JFrame{
                     } else {
                         this.counter--;
                     }
-                    
                     Thread.sleep(100);
                 } catch (InvocationTargetException | InterruptedException ex) {
                     /*
